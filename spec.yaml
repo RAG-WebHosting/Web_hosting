@@ -2,7 +2,7 @@ openapi: 'Required OpenAPI calls version'
 info:
   title: 'User Input'
   version: 'User Input of the format x.x.x'
-  description: API for managing and monitoring RAG pipelines on the Strative platform
+  description: 'Describing the purpose and functioning of the calls as customized'
 servers:
   - url: 'www.example.com'
 paths:
