@@ -1,10 +1,10 @@
-openapi: 3.0.0
+openapi: 'Required OpenAPI calls version' 
 info:
-  title: Strative API
-  version: 1.0.0
+  title: 'User Input'
+  version: 'User Input of the format x.x.x'
   description: API for managing and monitoring RAG pipelines on the Strative platform
 servers:
-  - url: https://api.strative.ai/v1
+  - url: 'www.example.com'
 paths:
   /pipelines:
     post:
