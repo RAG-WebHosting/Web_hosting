@@ -1,0 +1,869 @@
+openapi: 3.0.0
+info:
+  title: Strative API
+  version: 1.0.0
+  description: API for managing and monitoring RAG pipelines on the Strative platform
+servers:
+  - url: https://api.strative.ai/v1
+paths:
+  /pipelines:
+    post:
+      tags:
+        - Pipelines
+      summary: Create a new RAG pipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePipeline'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:    
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+    get:
+      tags:
+        - Pipelines
+      summary: List all RAG pipelines
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:    
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pipeline'
+                  
+  /pipelines/{id}:
+    get:
+      tags: 
+        - Pipelines
+      summary: Get details of a specific RAG pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+        '404':
+          description: Pipeline not found
+          
+    put:
+      tags:
+        - Pipelines
+      summary: Update a RAG pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePipeline'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+        '404':
+          description: Pipeline not found
+          
+    delete:
+      tags:
+        - Pipelines
+      summary: Delete a RAG pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Pipeline not found
+          
+  /pipelines/{id}/data_sources:
+    post:
+      tags: 
+        - Data Sources
+      summary: Add a data source to a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDataSource'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+                
+    get:
+      tags:
+        - Data Sources
+      summary: List data sources for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:    
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataSource'
+                  
+  /pipelines/{id}/data_sources/{source_id}:
+    put:
+      tags:
+        - Data Sources
+      summary: Update a data source
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: source_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDataSource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSource'
+        '404':
+          description: Data source not found
+          
+    delete:
+      tags:
+        - Data Sources
+      summary: Remove a data source
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: source_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Data source not found
+          
+  /pipelines/{id}/retrieval:
+    put:
+      tags:
+        - Retrieval Settings
+      summary: Configure retrieval settings for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrievalSettings'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalSettings'
+                
+    get:
+      tags:
+        - Retrieval Settings
+      summary: Get current retrieval settings
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalSettings'
+                
+  /pipelines/{id}/generation:
+    put:
+      tags:
+        - Generation Settings
+      summary: Configure generation settings for a pipeline 
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerationSettings'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationSettings'
+                
+    get:
+      tags:
+        - Generation Settings
+      summary: Get current generation settings
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationSettings'
+                
+  /pipelines/{id}/deploy:
+    post:
+      tags:
+        - Deployment
+      summary: Deploy a RAG pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          
+  /pipelines/{id}/status:
+    get:
+      tags:
+        - Status
+      summary: Get deployment status of a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineStatus'
+                
+  /pipelines/{id}/metrics:
+    get:
+      tags:
+        - Metrics
+      summary: Get performance metrics for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineMetrics'
+                
+  /pipelines/{id}/metrics/retrieval:
+    get:
+      tags:
+        - Metrics
+      summary: Get retrieval performance metrics
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalMetrics'
+                
+  /pipelines/{id}/metrics/generation:
+    get:
+      tags:
+        - Metrics
+      summary: Get generation performance metrics
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationMetrics'
+                
+  /pipelines/{id}/feedback:
+    post:
+      tags:
+        - Feedback
+      summary: Submit user feedback for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+      responses:
+        '201':
+          description: Created
+          
+    get:
+      tags:
+        - Feedback
+      summary: Get user feedback for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feedback'
+                  
+  /pipelines/{id}/errors:
+    post:
+      tags:
+        - Errors
+      summary: Report an error for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+      responses:
+        '201':
+          description: Created
+          
+    get:
+      tags:
+        - Errors
+      summary: Get reported errors for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+                  
+  /pipelines/{id}/recommendations:
+    get:
+      tags:
+        - Recommendation
+      summary: Get optimization recommendations for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recommendation'
+                  
+  /pipelines/{id}/recommendations/{rec_id}/apply:
+    post:
+      tags:
+        - Recommendation
+      summary: Apply an optimization recommendation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: rec_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          
+  /pipelines/{id}/insights:
+    get:
+      tags:
+        - Insights
+      summary: Get automated insights for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Insight'
+                  
+  /pipelines/{id}/auto_optimize:
+    put:
+      tags:
+        - Optimization
+      summary: Enable/disable continuous optimization for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: OK
+          
+  /pipelines/{id}/optimization_history:
+    get:
+      tags:
+        - Optimization
+      summary: Get optimization history for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OptimizationEvent'
+                  
+  /pipelines/{id}/logs:
+    get:
+      tags:
+        - Logs
+      summary: Get logs for a pipeline
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LogEntry'
+                  
+  /usage:
+    get:
+      tags:
+        - Usage
+      summary: Get API usage data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageData'
+                
+  /limits:
+    get:
+      tags:
+        - Limits
+      summary: Get current API rate limits and quotas
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LimitData'
+                
+components:
+  schemas:
+  
+    Pipeline:
+      type: object
+      properties:
+        id: 
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          
+    CreatePipeline:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          
+    UpdatePipeline:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          
+    DataSource:
+      type: object
+      properties:
+        id:
+          type: integer
+        pipeline_id:
+          type: integer
+        name: 
+          type: string
+        type:
+          type: string
+          enum: [database, api, file]
+        config:
+          type: object
+          
+    CreateDataSource:
+      type: object
+      required:
+        - name
+        - type
+        - config
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum: [database, api, file]
+        config:
+          type: object
+          
+    UpdateDataSource:
+      type: object
+      properties:
+        name:
+          type: string
+        config:
+          type: object
+          
+    RetrievalSettings:
+      type: object
+      properties:
+        model:
+          type: string
+        parameters:
+          type: object
+          
+    GenerationSettings:
+      type: object
+      properties:
+        model: 
+          type: string
+        parameters:
+          type: object
+          
+    PipelineStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+          enum: [deploying, deployed, error]
+        deployed_at:
+          type: string
+          format: date-time
+          
+    PipelineMetrics:
+      type: object
+      properties:
+        id:
+          type: integer
+        requests:
+          type: integer
+        avg_latency_ms:
+          type: number
+        error_rate:
+          type: number
+          
+    RetrievalMetrics:
+      type: object
+      properties:
+        id:
+          type: integer
+        requests:
+          type: integer
+        recall:
+          type: number
+        map:
+          type: number
+          
+    GenerationMetrics:  
+      type: object
+      properties:
+        id:
+          type: integer
+        requests:
+          type: integer
+        avg_generated_chars:
+          type: number
+          
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: integer
+        pipeline_id:
+          type: integer
+        user_id:
+          type: string
+        rating:
+          type: integer
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          
+    Error:
+      type: object
+      properties:
+        id:
+          type: integer
+        pipeline_id:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Optimize Query Performance"
+        description:
+          type: string
+          example: "Suggestions to improve the query performance"
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-01-01T12:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2023-01-02T12:00:00Z"
+    Insight:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        pipeline_id:
+          type: integer
+          example: 1
+        insight:
+          type: string
+          example: "The pipeline performance has improved by 20%."
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-01-01T12:00:00Z"
+    OptimizationEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        pipeline_id:
+          type: integer
+          example: 1
+        event:
+          type: string
+          example: "Optimization applied successfully."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2023-01-01T12:00:00Z"
+    LogEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        pipeline_id:
+          type: integer
+          example: 1
+        log:
+          type: string
+          example: "Pipeline deployed successfully."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2023-01-01T12:00:00Z"
+    UsageData:
+      type: object
+      properties:
+        total_requests:
+          type: integer
+          example: 1000
+        daily_requests:
+          type: integer
+          example: 100
+    LimitData:
+      type: object
+      properties:
+        rate_limit:
+          type: integer
+          example: 5000
+        quota_limit:
+          type: integer
+          example: 10000
+        remaining_requests:
+          type: integer
+          example: 4500

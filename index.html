@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Strative API Documentation</title>
+  <link rel="stylesheet" type="text/css" href="./swagger-ui-master/dist/swagger-ui.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9; /* Very light shade background */
+      margin: 0;
+      padding: 0;
+      color: #333; /* Dark text color for visibility */
+    }
+    .topbar {
+      background-color: #ff8c00; /* Orangish shade */
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .topbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .topbar nav {
+      display: flex;
+      gap: 20px;
+    }
+    .topbar nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .container {
+      display: flex;
+      margin: 20px auto;
+      max-width: 1200px;
+    }
+    .sidebar {
+      width: 250px;
+      background: #fff; /* White background for sidebar */
+      border-right: 1px solid #ddd;
+      padding: 20px;
+    }
+    .sidebar a {
+      display: block;
+      color: #333; /* Dark text color */
+      text-decoration: none;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .sidebar a:hover {
+      background-color: #ff8c00; /* Light orangish hover effect */
+      color: #fff; /* White text on hover */
+    }
+    .content {
+      flex: 1;
+      background: #f9f9f9; /* Very light background for content area */
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+      margin-left: 20px;
+    }
+    .swagger-ui .topbar {
+      display: none;
+    }
+    .swagger-ui .info {
+      margin-bottom: 20px;
+    }
+    .swagger-ui .info h1 {
+      font-size: 48px; /* Increase font size */
+      font-weight: 700; /* Make the text bolder */
+      color: #333; /* Dark text color */
+    }
+    .swagger-ui .info p {
+      font-size: 18px;
+      color: #666; /* Slightly darker grey for descriptions */
+    }
+    .swagger-ui .opblock-summary {
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      background: #fff; /* White background for summary blocks */
+    }
+    .swagger-ui .opblock-summary-method {
+      border-radius: 8px 0 0 8px;
+      background: #ff8c00; /* Orangish method background */
+      color: #fff;
+    }
+    .swagger-ui .opblock-summary-description {
+      font-size: 16px;
+      color: #333; /* Dark text color */
+    }
+    .swagger-ui .opblock-summary-path {
+      font-size: 16px;
+      color: #333; /* Dark text color */
+    }
+    .swagger-ui .opblock-summary-operation-id {
+      font-size: 14px;
+      color: #999;
+    }
+    .swagger-ui .opblock-body pre {
+      background-color: #f8f9fa; /* Very light background for code blocks */
+      padding: 10px;
+      border-radius: 4px;
+      color: #333; /* Dark text color for code */
+    }
+  </style>
+  <script src="./swagger-ui-master/dist/swagger-ui-bundle.js"></script>
+  <script src="./swagger-ui-master/dist/swagger-ui-standalone-preset.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">Strative API Documentation</div>
+    <nav>
+      <a href="#introduction">Introduction</a>
+      <a href="#authentication">Authentication</a>
+      <a href="#endpoints">Endpoints</a>
+      <a href="#errors">Errors</a>
+    </nav>
+  </div>
+  <div class="container">
+    <div class="sidebar">
+      <a onclick="filterCategory('Pipelines')">Pipelines</a>
+      <a onclick="filterCategory('Data Sources')">Data Sources</a>
+      <a onclick="filterCategory('Retrieval Settings')">Retrieval Settings</a>
+      <a onclick="filterCategory('Generation Settings')">Generation Settings</a>
+      <a onclick="filterCategory('Deployment')">Deployment</a>
+      <a onclick="filterCategory('Status')">Status</a>
+      <a onclick="filterCategory('Metrics')">Metrics</a>
+      <a onclick="filterCategory('Feedback')">Feedback</a>
+      <a onclick="filterCategory('Errors')">Errors</a>
+      <a onclick="filterCategory('Recommendations')">Recommendations</a>
+      <a onclick="filterCategory('Insights')">Insights</a>
+      <a onclick="filterCategory('Logs')">Logs</a>
+      <a onclick="filterCategory('Usage')">Usage</a>
+      <a onclick="filterCategory('Limits')">Limits</a>
+    </div>
+    <div class="content">
+      <div id="swagger-ui"></div>
+    </div>
+  </div>
+  <script>
+    window.onload = function() {
+      const ui = SwaggerUIBundle({
+        url: "./spec.yaml", // Update with the correct path to your spec.yaml file
+        dom_id: '#swagger-ui',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        layout: "BaseLayout",
+        deepLinking: true,
+        docExpansion: "none",
+        defaultModelsExpandDepth: -1,
+        onComplete: function() {
+          setupFiltering();
+        }
+      });
+    }
+
+    function filterCategory(category) {
+      const elements = document.querySelectorAll('.opblock-tag');
+      elements.forEach(element => {
+        if (element.querySelector('.nostyle span').innerText === category) {
+          element.style.display = '';
+        } else {
+          element.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
