@@ -1,4 +1,4 @@
-# Web Hosting for RAG API Documentation
+# RAG API Documentation - Hosting /Doc sites 
 
 This project provides a web interface for interacting with Retrieval-Augmented Generation (RAG) API pipelines. The web hosting solution utilizes Swagger UI to visualize and interact with API endpoints, facilitating the management and monitoring of RAG pipelines.
 
